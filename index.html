@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bankist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="output.css" />
+  </head>
+  <body>
+    <div class="w-screen h-screen bg-[#F3F3F3] overflow-hidden">
+      <header class="flex justify-between px-10 mt-5.5 mx-auto items-center">
+        <h2
+          class="font-[poppins] font-medium text-[#444444] text-[19px] leading-normal"
+        >
+          Log in to get started
+        </h2>
+        <img class="h-13" src="/logo.png" alt="" />
+        <form class="flex justify-center items-center" action="">
+          <input
+            class="transition-[2s] delay-100 mr-2 placeholder-[#BBBBBB] border-2 border-[#F5F5F5] focus:outline-none focus:border-[#DFDFDF] text-center w-30 h-10 text-[17px] bg-[#FFFFFF] rounded-3xl"
+            placeholder="user"
+            type="text"
+          />
+          <input
+            class="transition-[2s] delay-100 mr-2 placeholder-[#BBBBBB] text-center border-2 border-[#F5F5F5] focus:outline-none focus:border-[#DFDFDF] w-30 h-10 text-[17px] bg-[#FFFFFF] rounded-3xl"
+            placeholder="PIN"
+            type="text"
+          />
+          <input
+            class="text-[#444] cursor-pointer text-[2rem] "
+            value="→"
+            type="button"
+          />
+        </form>
+      </header>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
