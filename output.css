@@ -583,6 +583,14 @@
     --tw-leading: var(--leading-normal);
     line-height: var(--leading-normal);
   }
+  .font-\[520\] {
+    --tw-font-weight: 520;
+    font-weight: 520;
+  }
+  .font-\[550\] {
+    --tw-font-weight: 550;
+    font-weight: 550;
+  }
   .font-extrabold {
     --tw-font-weight: var(--font-weight-extrabold);
     font-weight: var(--font-weight-extrabold);
@@ -685,6 +693,69 @@
   .delay-100 {
     transition-delay: 100ms;
   }
+  .hover\:cursor-alias {
+    &:hover {
+      @media (hover: hover) {
+        cursor: alias;
+      }
+    }
+  }
+  .hover\:cursor-auto {
+    &:hover {
+      @media (hover: hover) {
+        cursor: auto;
+      }
+    }
+  }
+  .hover\:cursor-cell {
+    &:hover {
+      @media (hover: hover) {
+        cursor: cell;
+      }
+    }
+  }
+  .hover\:cursor-copy {
+    &:hover {
+      @media (hover: hover) {
+        cursor: copy;
+      }
+    }
+  }
+  .hover\:cursor-grab {
+    &:hover {
+      @media (hover: hover) {
+        cursor: grab;
+      }
+    }
+  }
+  .hover\:cursor-help {
+    &:hover {
+      @media (hover: hover) {
+        cursor: help;
+      }
+    }
+  }
+  .hover\:cursor-move {
+    &:hover {
+      @media (hover: hover) {
+        cursor: move;
+      }
+    }
+  }
+  .hover\:cursor-pointer {
+    &:hover {
+      @media (hover: hover) {
+        cursor: pointer;
+      }
+    }
+  }
+  .hover\:text-\[\#777777\] {
+    &:hover {
+      @media (hover: hover) {
+        color: #777777;
+      }
+    }
+  }
   .focus\:border-\[\#DFDFDF\] {
     &:focus {
       border-color: #DFDFDF;
@@ -703,6 +774,11 @@
   .focus\:bg-\[\#FFE59A\] {
     &:focus {
       background-color: #FFE59A;
+    }
+  }
+  .focus\:text-\[\#777777\] {
+    &:focus {
+      color: #777777;
     }
   }
   .focus\:outline-none {
