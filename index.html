@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="output.css" />
   </head>
-  <body>
+  <body class="h-full">
     <div class="w-screen h-screen bg-[#F3F3F3] overflow-hidden">
       <header class="flex justify-between px-10 mt-5.5 mx-auto items-center">
         <h2
@@ -33,12 +33,146 @@
             type="text"
           />
           <input
-            class="text-[#444] cursor-pointer text-[2rem] "
+            class="text-[#444] cursor-pointer text-[2rem]"
             value="→"
             type="button"
           />
         </form>
       </header>
+      <main
+        class="mx-auto mt-8 w-[59%] font-[poppins] flex flex-col text-[rgb(68,68,68)] h-[73vh]"
+      >
+        <header class="flex justify-between">
+          <div class="">
+            <p class="text-[22px] font-medium">Current balance</p>
+            <p class="text-[rgb(136,136,136)] text-[14px]">
+              As of <span class="">31/07/2020, 18:37</span>
+            </p>
+          </div>
+          <p class="text-[43px]">$11,720.00</p>
+        </header>
+        <div class="grid gap-4 grid-cols-[56%_43%] flex-1 min-h-0 mt-5">
+          <div class="bg-red-600 rounded-lg"></div>
+          <div class="grid grid-rows-3 gap-4">
+            <div class="bg-linear-to-br from-[#FFCA03] to-[#FFB103] rounded-lg">
+              <p
+                class="font-semibold text-[17px] text-[rgb(51, 51, 51)] pt-8 pl-9"
+              >
+                Transfer money
+              </p>
+              <div class="flex pt-3 pl-9 gap-2">
+                <div class="">
+                  <input
+                    class="bg-[#FFD968] rounded-[9px] w-35 h-7.5"
+                    type="text"
+                  />
+                  <p class="text-[13px] pt-0.5 text-center text-[#333333]">
+                    Transfer to
+                  </p>
+                </div>
+                <div>
+                  <input
+                    class="bg-[#FFD968] rounded-[9px] w-35 h-7.5"
+                    type="text"
+                  />
+                  <p class="text-[13px] pt-0.5 text-center text-[#333333]">
+                    Amount
+                  </p>
+                </div>
+                <input
+                  class="bg-[#FFFFFF] rounded-lg w-13 text-[18px] font-extrabold h-7.5"
+                  value="→"
+                  type="button"
+                />
+              </div>
+            </div>
+            <div class="bg-linear-to-br from-[#97DF5E] to-[#42B782] rounded-lg">
+              <p
+                class="font-semibold text-[17px] text-[rgb(51, 51, 51)] pt-8 pl-9"
+              >
+                Request loan
+              </p>
+              <div class="flex pt-3 pl-9 gap-2">
+                <div>
+                  <input
+                    class="bg-[#ABE2A7] rounded-[9px] w-35 h-7.5"
+                    type="text"
+                  />
+                  <p class="text-[13px] text-center pt-0.5 text-[#333333]">
+                    Amount
+                  </p>
+                </div>
+                <input
+                  class="bg-[#FFFFFF] rounded-lg w-13 text-[18px] font-extrabold h-7.5"
+                  value="→"
+                  type="button"
+                />
+              </div>
+            </div>
+            <div class="bg-linear-to-br from-[#FE565F] to-[#EB355B] rounded-lg">
+              <p
+                class="font-semibold text-[17px] text-[rgb(51, 51, 51)] pt-8 pl-9"
+              >
+                Close account
+              </p>
+              <div class="flex pt-3 pl-9 gap-2">
+                <div>
+                  <input
+                    class="bg-[#F88F9D] rounded-[9px] w-35 h-7.5"
+                    type="text"
+                  />
+                  <p class="text-[13px] text-center pt-0.5 text-[#333333]">
+                    Confirm user
+                  </p>
+                </div>
+                <div>
+                  <input
+                    class="bg-[#F88F9D] rounded-[9px] w-35 h-7.5"
+                    type="text"
+                  />
+                  <p class="text-[13px] text-center pt-0.5 text-[#333333]">
+                    Confirm PIN
+                  </p>
+                </div>
+                <input
+                  class="bg-[#FFFFFF] rounded-lg w-13 text-[18px] font-extrabold h-7.5"
+                  value="→"
+                  type="button"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <div
+        class="h-[10vh] flex w-[59%] mt-1.5 mx-auto justify-between items-center font-[poppins]"
+      >
+        <div class="flex gap-7 items-baseline pl-1">
+          <p class="text-[12px] text-[rgb(68,68,68)] font-medium">
+            IN
+            <span class="text-[22px] text-[#66C873] pl-1.5">$16,900.00</span>
+          </p>
+          <p class="text-[12px] text-[rgb(68,68,68)] font-medium">
+            OUT
+            <span class="text-[22px] text-[#F5465D] pl-1.5">$5,180.00</span>
+          </p>
+          <p class="text-[12px] text-[rgb(68,68,68)] font-medium">
+            INTEREST
+            <span class="text-[22px] text-[#66C873] pl-1.5">$253.50</span>
+          </p>
+          <p
+            class="text-[13.5px] text-[rgb(68,68,68)] font-[arial] font-medium"
+          >
+            ↓ SORT
+          </p>
+        </div>
+        <p class="text-[13px] text-[rgb(68,68,68)] -mr-1">
+          You will be logged out in
+          <span class="font-semibold text-[13px] text-[rgb(68,68,68)]"
+            >6:37</span
+          >
+        </p>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
