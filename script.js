@@ -19,6 +19,8 @@ const account3 = {
 };
 const movementsElement = document.querySelector(".movements");
 const balanceElement = document.querySelector(".total_balance");
+const InBalanceElement = document.querySelector(".in_balance");
+const OutBalanceElement = document.querySelector(".out_balance");
 const clockElement = document.querySelector(".clock");
 const insertMovements = function (movements) {
   movements.forEach(function (mov, number) {
@@ -42,8 +44,21 @@ const insertMovements = function (movements) {
 };
 const totalBalance = function (movements) {
   let balance = 0;
-  for (let i = 0; i < movements.length; i++) balance += movements[i];
+  for (let i = 0; i < movements.length; i++)
+    balance += movements[i] > 0 ? movements[i] : 0;
   balanceElement.textContent = `${balance > 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
+};
+const inBalance = function (movements) {
+  let balance = 0;
+  for (let i = 0; i < movements.length; i++)
+    balance += movements[i] > 0 ? movements[i] : movements[i] * -1;
+  InBalanceElement.textContent = `${balance > 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
+};
+const outBalance = function (movements) {
+  let balance = 0;
+  for (let i = 0; i < movements.length; i++)
+    balance += movements[i] < 0 ? movements[i] * -1 : 0;
+  OutBalanceElement.textContent = `$${balance}`;
 };
 const updateClock = function () {
   const now = new Date();
@@ -59,5 +74,7 @@ const updateClock = function () {
 };
 insertMovements(account1.movements);
 totalBalance(account1.movements);
+inBalance(account1.movements);
+outBalance(account1.movements);
 setInterval(updateClock, 1000);
 updateClock();
