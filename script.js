@@ -74,10 +74,10 @@ const outBalance = function (movements) {
   );
   OutBalanceElement.textContent = `$${balance}`;
 };
-const interest = function (movements) {
-  let interest = movements
+const interest = function (account) {
+  let interest = account.movements
     .filter((mov) => mov >= 0)
-    .map((mov) => (mov * 1.2) / 100)
+    .map((mov) => (mov * account.interestRate) / 100)
     .filter((interest) => interest >= 1)
     .reduce((interest, mov) => interest + mov, 0);
   interestElement.textContent = `$${interest}`;
@@ -104,17 +104,20 @@ const createUserName = function (accounts) {
   });
 };
 const loginUpdate = function (account) {
+  greetingElement.textContent = `Good Afternoon, ${account.owner.slice(0, account.owner.indexOf(" "))}!`;
   insertMovements(account.movements);
   totalBalance(account.movements);
   inBalance(account.movements);
   outBalance(account.movements);
-  interest(account.movements);
+  interest(account);
   setInterval(updateClock, 1000);
   updateClock();
   mainElement.classList.remove("opacity-0");
   summaryElement.classList.remove("opacity-0");
   usernameElement.value = "";
   pinElement.value = "";
+  usernameElement.blur();
+  pinElement.blur();
 };
 const Login = function (username, pin, accounts) {
   if (username == undefined || pin == undefined) {
@@ -130,17 +133,10 @@ const Login = function (username, pin, accounts) {
     console.log("the account does not exist");
     return -1;
   }
-  greetingElement.textContent = `Good Afternoon, ${account.owner.slice(0, " ")}!`;
   loginUpdate(account);
 };
-// insertMovements(account1.movements);
-// totalBalance(account1.movements);
-// inBalance(account1.movements);
-// outBalance(account1.movements);
-// interest(account1.movements);
-// setInterval(updateClock, 1000);
-// updateClock();
 createUserName(accounts);
-loginElement.addEventListener("click", () => {
+loginElement.addEventListener("click", (e) => {
+  e.preventDefault();
   Login(usernameElement.value, Number(pinElement.value), accounts);
 });
