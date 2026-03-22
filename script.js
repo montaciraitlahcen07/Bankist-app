@@ -30,6 +30,12 @@ const InBalanceElement = document.querySelector(".in_balance");
 const OutBalanceElement = document.querySelector(".out_balance");
 const interestElement = document.querySelector(".interest");
 const clockElement = document.querySelector(".clock");
+const usernameElement = document.querySelector(".username");
+const pinElement = document.querySelector(".pin");
+const loginElement = document.querySelector(".login-button");
+const greetingElement = document.querySelector(".greeting");
+const mainElement = document.querySelector(".main");
+const summaryElement = document.querySelector(".summary");
 const insertMovements = function (movements) {
   movements.forEach(function (mov, number) {
     const insertMov = `<div
@@ -97,12 +103,44 @@ const createUserName = function (accounts) {
       .join("");
   });
 };
-insertMovements(account1.movements);
-totalBalance(account1.movements);
-inBalance(account1.movements);
-outBalance(account1.movements);
-interest(account1.movements);
-setInterval(updateClock, 1000);
-updateClock();
+const loginUpdate = function (account) {
+  insertMovements(account.movements);
+  totalBalance(account.movements);
+  inBalance(account.movements);
+  outBalance(account.movements);
+  interest(account.movements);
+  setInterval(updateClock, 1000);
+  updateClock();
+  mainElement.classList.remove("opacity-0");
+  summaryElement.classList.remove("opacity-0");
+  usernameElement.value = "";
+  pinElement.value = "";
+};
+const Login = function (username, pin, accounts) {
+  if (username == undefined || pin == undefined) {
+    console.log("username or pin is not filled");
+    return -1;
+  }
+  const account = accounts.find((account) => account.username === username);
+  if (account == undefined) {
+    console.log("the account does not exist");
+    return -1;
+  }
+  if (account.pin !== pin) {
+    console.log("the account does not exist");
+    return -1;
+  }
+  greetingElement.textContent = `Good Afternoon, ${account.owner.slice(0, " ")}!`;
+  loginUpdate(account);
+};
+// insertMovements(account1.movements);
+// totalBalance(account1.movements);
+// inBalance(account1.movements);
+// outBalance(account1.movements);
+// interest(account1.movements);
+// setInterval(updateClock, 1000);
+// updateClock();
 createUserName(accounts);
- 
+loginElement.addEventListener("click", () => {
+  Login(usernameElement.value, Number(pinElement.value), accounts);
+});

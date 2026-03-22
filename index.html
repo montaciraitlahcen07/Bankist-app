@@ -16,31 +16,32 @@
     <div class="w-screen h-screen bg-[#F3F3F3] overflow-auto">
       <header class="flex justify-between px-10 mt-5.5 mx-auto items-center">
         <h2
-          class="font-[poppins] font-medium text-[#444444] text-[19px] leading-normal"
+          class="font-[poppins] font-medium text-[#444444] text-[19px] leading-normal greeting"
         >
           Log in to get started
         </h2>
         <img class="h-13" src="/logo.png" alt="" />
         <form class="flex justify-center items-center font-[poppins]" action="">
           <input
-            class="transition-[2s] delay-100 mr-2 placeholder-[#BBBBBB] border-2 border-[#F5F5F5] focus:outline-none focus:border-[#DFDFDF] text-center w-30 h-10 text-[16px] bg-[#FFFFFF] rounded-3xl"
+            class="transition-[2s] delay-100 mr-2 placeholder-[#BBBBBB] border-2 border-[#F5F5F5] focus:outline-none focus:border-[#DFDFDF] text-center w-30 h-10 text-[16px] bg-[#FFFFFF] rounded-3xl username"
             placeholder="user"
             type="text"
           />
           <input
-            class="transition-[2s] delay-100 mr-2 placeholder-[#BBBBBB] text-center border-2 border-[#F5F5F5] focus:outline-none focus:border-[#DFDFDF] w-30 h-10 text-[16px] bg-[#FFFFFF] rounded-3xl"
+            class="transition-[2s] delay-100 mr-2 placeholder-[#BBBBBB] text-center border-2 border-[#F5F5F5] focus:outline-none focus:border-[#DFDFDF] w-30 h-10 text-[16px] bg-[#FFFFFF] rounded-3xl pin"
+            maxlength="4"
             placeholder="PIN"
             type="text"
           />
           <input
-            class="text-[#444] cursor-pointer font-semibold text-[1.4rem]"
+            class="text-[#444] cursor-pointer font-semibold text-[1.4rem] login-button"
             value="→"
             type="button"
           />
         </form>
       </header>
       <main
-        class="mx-auto mt-8 w-[59%] font-[poppins] flex flex-col text-[rgb(68,68,68)] h-[73vh]"
+        class="mx-auto mt-8 w-[59%] font-[poppins] flex flex-col text-[rgb(68,68,68)] h-[73vh] opacity-0 main"
       >
         <header class="flex justify-between">
           <div class="">
@@ -130,6 +131,7 @@
                 <div>
                   <input
                     class="bg-[#F88F9D] rounded-[9px] w-35 h-7.5 outline-0 focus:bg-[#FAB4BE] text-center"
+                    maxlength="4"
                     type="password"
                   />
                   <p class="text-[13px] text-center pt-0.5 text-[#333333]">
@@ -147,7 +149,7 @@
         </div>
       </main>
       <div
-        class="h-[10vh] flex w-[59%] mt-1.5 mx-auto justify-between items-center font-[poppins]"
+        class="h-[10vh] flex w-[59%] mt-1.5 mx-auto justify-between items-center font-[poppins] opacity-0 summary"
       >
         <div class="flex gap-7 items-baseline pl-1">
           <p class="text-[12px] text-[rgb(68,68,68)] font-medium">
