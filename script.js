@@ -17,10 +17,18 @@ const account3 = {
   interestRate: 0.7,
   pin: 3333,
 };
+const account4 = {
+  owner: "Sarah Smith",
+  movements: [430, 1000, 700, 50, 90],
+  interestRate: 1,
+  pin: 4444,
+};
+const accounts = [account1, account2, account3, account4];
 const movementsElement = document.querySelector(".movements");
 const balanceElement = document.querySelector(".total_balance");
 const InBalanceElement = document.querySelector(".in_balance");
 const OutBalanceElement = document.querySelector(".out_balance");
+const interestElement = document.querySelector(".interest");
 const clockElement = document.querySelector(".clock");
 const insertMovements = function (movements) {
   movements.forEach(function (mov, number) {
@@ -43,22 +51,30 @@ const insertMovements = function (movements) {
   });
 };
 const totalBalance = function (movements) {
-  let balance = 0;
-  for (let i = 0; i < movements.length; i++)
-    balance += movements[i] > 0 ? movements[i] : 0;
+  let balance = movements.reduce((accu, mov) => accu + mov, 0);
   balanceElement.textContent = `${balance > 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
 };
 const inBalance = function (movements) {
-  let balance = 0;
-  for (let i = 0; i < movements.length; i++)
-    balance += movements[i] > 0 ? movements[i] : movements[i] * -1;
+  let balance = movements.reduce(
+    (accu, mov) => (mov > 0 ? accu + mov : accu),
+    0,
+  );
   InBalanceElement.textContent = `${balance > 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
 };
 const outBalance = function (movements) {
-  let balance = 0;
-  for (let i = 0; i < movements.length; i++)
-    balance += movements[i] < 0 ? movements[i] * -1 : 0;
+  let balance = movements.reduce(
+    (accu, mov) => (mov < 0 ? accu + mov * -1 : accu),
+    0,
+  );
   OutBalanceElement.textContent = `$${balance}`;
+};
+const interest = function (movements) {
+  let interest = movements
+    .filter((mov) => mov >= 0)
+    .map((mov) => (mov * 1.2) / 100)
+    .filter((interest) => interest >= 1)
+    .reduce((interest, mov) => interest + mov, 0);
+  interestElement.textContent = `$${interest}`;
 };
 const updateClock = function () {
   const now = new Date();
@@ -72,9 +88,21 @@ const updateClock = function () {
   });
   clockElement.textContent = formatted;
 };
+const createUserName = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(" ")
+      .map((user) => user[0])
+      .join("");
+  });
+};
 insertMovements(account1.movements);
 totalBalance(account1.movements);
 inBalance(account1.movements);
 outBalance(account1.movements);
+interest(account1.movements);
 setInterval(updateClock, 1000);
 updateClock();
+createUserName(accounts);
+ 
