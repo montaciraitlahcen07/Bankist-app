@@ -83,7 +83,7 @@ const interest = function (account) {
     .filter((mov) => mov >= 0)
     .map((mov) => (mov * account.interestRate) / 100)
     .filter((interest) => interest >= 1)
-    .reduce((interest, mov) => interest + mov, 0);
+    .reduce((interest, mov) => interest + mov, 0).toFixed(2);
   interestElement.textContent = `$${interest}`;
 };
 const updateClock = function () {
