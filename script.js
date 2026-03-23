@@ -36,7 +36,11 @@ const loginElement = document.querySelector(".login-button");
 const greetingElement = document.querySelector(".greeting");
 const mainElement = document.querySelector(".main");
 const summaryElement = document.querySelector(".summary");
+const transferToElement = document.querySelector(".transfer_to");
+const transferAmountElement = document.querySelector(".transfer_amount");
+const transferButtonElement = document.querySelector(".transfer_button");
 const insertMovements = function (movements) {
+  movementsElement.innerHTML = "";
   movements.forEach(function (mov, number) {
     const insertMov = `<div
               class="flex justify-between items-baseline px-8 py-6 border-b border-[#EEEEEE] ${mov < 0 ? "WITHDRAWAL" : "DEPOSIT"}"
@@ -58,7 +62,7 @@ const insertMovements = function (movements) {
 };
 const totalBalance = function (movements) {
   let balance = movements.reduce((accu, mov) => accu + mov, 0);
-  balanceElement.textContent = `${balance > 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
+  balanceElement.textContent = `${balance >= 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
 };
 const inBalance = function (movements) {
   let balance = movements.reduce(
@@ -119,14 +123,24 @@ const loginUpdate = function (account) {
   usernameElement.blur();
   pinElement.blur();
 };
+// the account who is active right now the one that could transfer money, loan and close the account
+let account = null;
 const Login = function (username, pin, accounts) {
   if (username == undefined || pin == undefined) {
     console.log("username or pin is not filled");
+    usernameElement.value = "";
+    pinElement.value = "";
+    usernameElement.blur();
+    pinElement.blur();
     return -1;
   }
-  const account = accounts.find((account) => account.username === username);
+  account = accounts.find((acc) => acc.username === username);
   if (account == undefined) {
     console.log("the account does not exist");
+    usernameElement.value = "";
+    pinElement.value = "";
+    usernameElement.blur();
+    pinElement.blur();
     return -1;
   }
   if (account.pin !== pin) {
@@ -135,8 +149,48 @@ const Login = function (username, pin, accounts) {
   }
   loginUpdate(account);
 };
+const transferMoney = function (transferTo, Amount, accounts, account) {
+  if (transferTo == undefined || Amount == undefined) {
+    console.log("tansferTo or Amount is not filled");
+    transferToElement.value = "";
+    transferAmountElement.value = "";
+    transferToElement.blur();
+    transferAmountElement.blur();
+    return -1;
+  }
+  if (
+    account.movements.reduce((accu, mov) => accu + mov, 0) < Amount ||
+    Amount <= 0
+  ) {
+    console.log(
+      "you did not have that amount of money or the amount is below or equal the zero",
+    );
+    transferToElement.value = "";
+    transferAmountElement.value = "";
+    transferToElement.blur();
+    transferAmountElement.blur();
+    return -1;
+  }
+  account.movements.push(Amount * -1);
+  const ReceiverAccount = accounts.find((acc) => acc.username === transferTo);
+  ReceiverAccount.movements.push(Amount);
+  transferToElement.value = "";
+  transferAmountElement.value = "";
+  transferToElement.blur();
+  transferAmountElement.blur();
+};
 createUserName(accounts);
 loginElement.addEventListener("click", (e) => {
   e.preventDefault();
   Login(usernameElement.value, Number(pinElement.value), accounts);
+});
+transferButtonElement.addEventListener("click", (e) => {
+  e.preventDefault();
+  transferMoney(
+    transferToElement.value,
+    Number(transferAmountElement.value),
+    accounts,
+    account,
+  );
+  loginUpdate(account);
 });
