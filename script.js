@@ -39,6 +39,9 @@ const summaryElement = document.querySelector(".summary");
 const transferToElement = document.querySelector(".transfer_to");
 const transferAmountElement = document.querySelector(".transfer_amount");
 const transferButtonElement = document.querySelector(".transfer_button");
+const closeUserElement = document.querySelector(".close_user");
+const closePinElement = document.querySelector(".close_pin");
+const closeButtonElement = document.querySelector(".close_button");
 const insertMovements = function (movements) {
   movementsElement.innerHTML = "";
   movements.forEach(function (mov, number) {
@@ -83,7 +86,8 @@ const interest = function (account) {
     .filter((mov) => mov >= 0)
     .map((mov) => (mov * account.interestRate) / 100)
     .filter((interest) => interest >= 1)
-    .reduce((interest, mov) => interest + mov, 0).toFixed(2);
+    .reduce((interest, mov) => interest + mov, 0)
+    .toFixed(2);
   interestElement.textContent = `$${interest}`;
 };
 const updateClock = function () {
@@ -160,7 +164,8 @@ const transferMoney = function (transferTo, Amount, accounts, account) {
   }
   if (
     account.movements.reduce((accu, mov) => accu + mov, 0) < Amount ||
-    Amount <= 0
+    Amount <= 0 ||
+    account.username === transferTo
   ) {
     console.log(
       "you did not have that amount of money or the amount is below or equal the zero",
@@ -171,13 +176,51 @@ const transferMoney = function (transferTo, Amount, accounts, account) {
     transferAmountElement.blur();
     return -1;
   }
-  account.movements.push(Amount * -1);
   const ReceiverAccount = accounts.find((acc) => acc.username === transferTo);
+  if (ReceiverAccount == undefined) {
+    console.log("the receiver account does not exist");
+    transferToElement.value = "";
+    transferAmountElement.value = "";
+    transferToElement.blur();
+    transferAmountElement.blur();
+    return -1;
+  }
+  account.movements.push(Amount * -1);
   ReceiverAccount.movements.push(Amount);
   transferToElement.value = "";
   transferAmountElement.value = "";
   transferToElement.blur();
   transferAmountElement.blur();
+};
+const closeAccount = function (user, pin, accounts, account) {
+  if (user == undefined || pin == undefined) {
+    console.log("user or pin is not filled");
+    closeUserElement.value = "";
+    closePinElement.value = "";
+    closeUserElement.blur();
+    closePinElement.blur();
+    return -1;
+  }
+  if (user !== account.username || Number(pin) !== account.pin) {
+    console.log(
+      "the username or the pin is not matching the account is fields",
+    );
+    closeUserElement.value = "";
+    closePinElement.value = "";
+    closeUserElement.blur();
+    closePinElement.blur();
+    return -1;
+  }
+  accounts.splice(
+    accounts.findIndex((account) => account.username === user),
+    1,
+  );
+  mainElement.classList.add("opacity-0");
+  summaryElement.classList.add("opacity-0");
+  closeUserElement.value = "";
+  closePinElement.value = "";
+  closeUserElement.blur();
+  closePinElement.blur();
 };
 createUserName(accounts);
 loginElement.addEventListener("click", (e) => {
@@ -193,4 +236,13 @@ transferButtonElement.addEventListener("click", (e) => {
     account,
   );
   loginUpdate(account);
+});
+closeButtonElement.addEventListener("click", (e) => {
+  e.preventDefault();
+  closeAccount(
+    closeUserElement.value,
+    closePinElement.value,
+    accounts,
+    account,
+  );
 });
