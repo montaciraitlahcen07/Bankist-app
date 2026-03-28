@@ -215,12 +215,13 @@ const closeAccount = function (user, pin, accounts, account) {
 };
 const loanRequest = function (amount, account) {
   if (
-    amount > 0 ||
+    amount < 0 ||
     amount == undefined ||
     !account.movements.some((mov) => mov > amount * 0.1)
   ) {
     loanAmountElement.value = "";
     loanAmountElement.blur();
+    return -1;
   }
   account.movements.push(amount);
   loanAmountElement.value = "";
