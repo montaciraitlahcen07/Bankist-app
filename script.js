@@ -44,6 +44,8 @@ const closePinElement = document.querySelector(".close_pin");
 const closeButtonElement = document.querySelector(".close_button");
 const loanAmountElement = document.querySelector(".loan_amount");
 const loanButtonElement = document.querySelector(".loan_button");
+const sortElement = document.querySelector(".sort");
+let sorted = false;
 const insertMovements = function (movements) {
   movementsElement.innerHTML = "";
   movements.forEach(function (mov, number) {
@@ -132,6 +134,7 @@ const updateData = function (account) {
 // the account who is active right now the one that could transfer money, loan and close the account
 let account = null;
 const Login = function (username, pin, accounts) {
+  sorted = false;
   if (username == undefined || pin == undefined) {
     ("username or pin is not filled");
     usernameElement.value = "";
@@ -154,6 +157,7 @@ const Login = function (username, pin, accounts) {
   updateData(account);
 };
 const transferMoney = function (transferTo, Amount, accounts, account) {
+  sorted = false;
   if (transferTo == undefined || Amount == undefined) {
     transferToElement.value = "";
     transferAmountElement.value = "";
@@ -188,6 +192,7 @@ const transferMoney = function (transferTo, Amount, accounts, account) {
   transferAmountElement.blur();
 };
 const closeAccount = function (user, pin, accounts, account) {
+  sorted = false;
   if (user == undefined || pin == undefined) {
     closeUserElement.value = "";
     closePinElement.value = "";
@@ -214,6 +219,7 @@ const closeAccount = function (user, pin, accounts, account) {
   closePinElement.blur();
 };
 const loanRequest = function (amount, account) {
+  sorted = false;
   if (
     amount < 0 ||
     amount == undefined ||
@@ -226,6 +232,20 @@ const loanRequest = function (amount, account) {
   account.movements.push(amount);
   loanAmountElement.value = "";
   loanAmountElement.blur();
+};
+const sorting = function () {
+  if (!sorted) {
+    sorted = true;
+    insertMovements(
+      structuredClone(account.movements).sort((a, b) => {
+        if (a < b) return -1;
+        else if (a > b) return 1;
+      }),
+    );
+  } else if (sorted) {
+    sorted = false;
+    insertMovements(account.movements);
+  }
 };
 createUserName(accounts);
 loginElement.addEventListener("click", (e) => {
@@ -256,3 +276,4 @@ closeButtonElement.addEventListener("click", (e) => {
     account,
   );
 });
+sortElement.addEventListener("click", sorting);
