@@ -235,17 +235,13 @@ const loanRequest = function (amount, account) {
 };
 const sorting = function () {
   if (!sorted) {
-    sorted = true;
     insertMovements(
-      structuredClone(account.movements).sort((a, b) => {
-        if (a < b) return -1;
-        else if (a > b) return 1;
-      }),
+      structuredClone(account.movements).sort((a, b) => a - b),
     );
   } else if (sorted) {
-    sorted = false;
     insertMovements(account.movements);
   }
+  sorted = !sorted;
 };
 createUserName(accounts);
 loginElement.addEventListener("click", (e) => {
