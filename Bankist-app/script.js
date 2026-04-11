@@ -1,0 +1,277 @@
+"use strict";
+// const account1 = {
+//   owner: "Mountacir Ait Lahsen",
+//   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+//   interestRate: 1.2,
+//   pin: 1111,
+// };
+// const account2 = {
+//   owner: "Jessica Davis",
+//   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+//   interestRate: 1.5,
+//   pin: 2222,
+// };
+// const account3 = {
+//   owner: "Steven Thomas Williams",
+//   movements: [200, -200, 340, -300, -20, 50, 400, -460],
+//   interestRate: 0.7,
+//   pin: 3333,
+// };
+// const account4 = {
+//   owner: "Sarah Smith",
+//   movements: [430, 1000, 700, 50, 90],
+//   interestRate: 1,
+//   pin: 4444,
+// };
+// const accounts = [account1, account2, account3, account4];
+// const movementsElement = document.querySelector(".movements");
+// const balanceElement = document.querySelector(".total_balance");
+// const InBalanceElement = document.querySelector(".in_balance");
+// const OutBalanceElement = document.querySelector(".out_balance");
+// const interestElement = document.querySelector(".interest");
+// const clockElement = document.querySelector(".clock");
+// const usernameElement = document.querySelector(".username");
+// const pinElement = document.querySelector(".pin");
+// const loginElement = document.querySelector(".login-button");
+// const greetingElement = document.querySelector(".greeting");
+// const mainElement = document.querySelector(".main");
+// const summaryElement = document.querySelector(".summary");
+// const transferToElement = document.querySelector(".transfer_to");
+// const transferAmountElement = document.querySelector(".transfer_amount");
+// const transferButtonElement = document.querySelector(".transfer_button");
+// const closeUserElement = document.querySelector(".close_user");
+// const closePinElement = document.querySelector(".close_pin");
+// const closeButtonElement = document.querySelector(".close_button");
+// const loanAmountElement = document.querySelector(".loan_amount");
+// const loanButtonElement = document.querySelector(".loan_button");
+// const sortElement = document.querySelector(".sort");
+// let sorted = false;
+// const insertMovements = function (movements) {
+//   movementsElement.innerHTML = "";
+//   movements.forEach(function (mov, number) {
+//     const insertMov = `<div
+//               class="flex justify-between items-baseline px-8 py-6 border-b border-[#EEEEEE] ${mov < 0 ? "WITHDRAWAL" : "DEPOSIT"}"
+//             >
+//               <div class="flex gap-6">
+//                 <p
+//                   class="rounded-xl bg-linear-to-br ${mov < 0 ? "from-[#FC525F] to-[#E9315B]" : "from-[#8DDA62] to-[#43B882]"} text-white text-[11px] font-[poppins] font-medium py-px px-2"
+//                 >
+//                   ${++number} ${mov < 0 ? "WITHDRAWAL" : "DEPOSIT"}
+//                 </p>
+//                 <span class="text-[11px] font-medium text-[rgb(102,102,102)]"
+//                   >2/26/2020</span
+//                 >
+//               </div>
+//               <span class="text-[17px] text-[rgb(68,68,68)]">${mov > 0 ? "" : "-"}$${mov > 0 ? mov : mov * -1}</span>
+//             </div>`;
+//     movementsElement.insertAdjacentHTML("afterbegin", insertMov);
+//   });
+// };
+// const totalBalance = function (movements) {
+//   let balance = movements.reduce((accu, mov) => accu + mov, 0);
+//   balanceElement.textContent = `${balance >= 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
+// };
+// const inBalance = function (movements) {
+//   let balance = movements.reduce(
+//     (accu, mov) => (mov > 0 ? accu + mov : accu),
+//     0,
+//   );
+//   InBalanceElement.textContent = `${balance > 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
+// };
+// const outBalance = function (movements) {
+//   let balance = movements.reduce(
+//     (accu, mov) => (mov < 0 ? accu + mov * -1 : accu),
+//     0,
+//   );
+//   OutBalanceElement.textContent = `$${balance}`;
+// };
+// const interest = function (account) {
+//   let interest = account.movements
+//     .filter((mov) => mov >= 0)
+//     .map((mov) => (mov * account.interestRate) / 100)
+//     .filter((interest) => interest >= 1)
+//     .reduce((interest, mov) => interest + mov, 0)
+//     .toFixed(2);
+//   interestElement.textContent = `$${interest}`;
+// };
+// const updateClock = function () {
+//   const now = new Date();
+//   const formatted = now.toLocaleString("en-GB", {
+//     day: "2-digit",
+//     month: "2-digit",
+//     year: "numeric",
+//     hour: "2-digit",
+//     minute: "2-digit",
+//     hour12: false,
+//   });
+//   clockElement.textContent = formatted;
+// };
+// const createUserName = function (accounts) {
+//   accounts.forEach(function (account) {
+//     account.username = account.owner
+//       .toLowerCase()
+//       .split(" ")
+//       .map((user) => user[0])
+//       .join("");
+//   });
+// };
+// const updateData = function (account) {
+//   greetingElement.textContent = `Good Afternoon, ${account.owner.slice(0, account.owner.indexOf(" "))}!`;
+//   insertMovements(account.movements);
+//   totalBalance(account.movements);
+//   inBalance(account.movements);
+//   outBalance(account.movements);
+//   interest(account);
+//   setInterval(updateClock, 1000);
+//   updateClock();
+//   mainElement.classList.remove("opacity-0");
+//   summaryElement.classList.remove("opacity-0");
+//   usernameElement.value = "";
+//   pinElement.value = "";
+//   usernameElement.blur();
+//   pinElement.blur();
+// };
+// // the account who is active right now the one that could transfer money, loan and close the account
+// let account = null;
+// const Login = function (username, pin, accounts) {
+//   sorted = false;
+//   if (username == undefined || pin == undefined) {
+//     ("username or pin is not filled");
+//     usernameElement.value = "";
+//     pinElement.value = "";
+//     usernameElement.blur();
+//     pinElement.blur();
+//     return -1;
+//   }
+//   account = accounts.find((acc) => acc.username === username);
+//   if (account == undefined) {
+//     usernameElement.value = "";
+//     pinElement.value = "";
+//     usernameElement.blur();
+//     pinElement.blur();
+//     return -1;
+//   }
+//   if (account.pin !== pin) {
+//     return -1;
+//   }
+//   updateData(account);
+// };
+// const transferMoney = function (transferTo, Amount, accounts, account) {
+//   sorted = false;
+//   if (transferTo == undefined || Amount == undefined) {
+//     transferToElement.value = "";
+//     transferAmountElement.value = "";
+//     transferToElement.blur();
+//     transferAmountElement.blur();
+//     return -1;
+//   }
+//   if (
+//     account.movements.reduce((accu, mov) => accu + mov, 0) < Amount ||
+//     Amount <= 0 ||
+//     account.username === transferTo
+//   ) {
+//     transferToElement.value = "";
+//     transferAmountElement.value = "";
+//     transferToElement.blur();
+//     transferAmountElement.blur();
+//     return -1;
+//   }
+//   const ReceiverAccount = accounts.find((acc) => acc.username === transferTo);
+//   if (ReceiverAccount == undefined) {
+//     transferToElement.value = "";
+//     transferAmountElement.value = "";
+//     transferToElement.blur();
+//     transferAmountElement.blur();
+//     return -1;
+//   }
+//   account.movements.push(Amount * -1);
+//   ReceiverAccount.movements.push(Amount);
+//   transferToElement.value = "";
+//   transferAmountElement.value = "";
+//   transferToElement.blur();
+//   transferAmountElement.blur();
+// };
+// const closeAccount = function (user, pin, accounts, account) {
+//   sorted = false;
+//   if (user == undefined || pin == undefined) {
+//     closeUserElement.value = "";
+//     closePinElement.value = "";
+//     closeUserElement.blur();
+//     closePinElement.blur();
+//     return -1;
+//   }
+//   if (user !== account.username || Number(pin) !== account.pin) {
+//     closeUserElement.value = "";
+//     closePinElement.value = "";
+//     closeUserElement.blur();
+//     closePinElement.blur();
+//     return -1;
+//   }
+//   accounts.splice(
+//     accounts.findIndex((account) => account.username === user),
+//     1,
+//   );
+//   mainElement.classList.add("opacity-0");
+//   summaryElement.classList.add("opacity-0");
+//   closeUserElement.value = "";
+//   closePinElement.value = "";
+//   closeUserElement.blur();
+//   closePinElement.blur();
+// };
+// const loanRequest = function (amount, account) {
+//   sorted = false;
+//   if (
+//     amount < 0 ||
+//     amount == undefined ||
+//     !account.movements.some((mov) => mov > amount * 0.1)
+//   ) {
+//     loanAmountElement.value = "";
+//     loanAmountElement.blur();
+//     return -1;
+//   }
+//   account.movements.push(amount);
+//   loanAmountElement.value = "";
+//   loanAmountElement.blur();
+// };
+// const sorting = function () {
+//   if (!sorted) {
+//     insertMovements(
+//       structuredClone(account.movements).sort((a, b) => a - b),
+//     );
+//   } else if (sorted) {
+//     insertMovements(account.movements);
+//   }
+//   sorted = !sorted;
+// };
+// createUserName(accounts);
+// loginElement.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   Login(usernameElement.value, Number(pinElement.value), accounts);
+// });
+// transferButtonElement.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   transferMoney(
+//     transferToElement.value,
+//     Number(transferAmountElement.value),
+//     accounts,
+//     account,
+//   );
+//   updateData(account);
+// });
+// loanButtonElement.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   loanRequest(Number(loanAmountElement.value), account);
+//   updateData(account);
+// });
+// closeButtonElement.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   closeAccount(
+//     closeUserElement.value,
+//     closePinElement.value,
+//     accounts,
+//     account,
+//   );
+// });
+// sortElement.addEventListener("click", sorting);
+
+console.log('something');
