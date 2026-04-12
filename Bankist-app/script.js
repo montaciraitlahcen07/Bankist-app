@@ -70,26 +70,33 @@ const sortElement = document.querySelector(".sort");
 let sorted = false;
 const insertMovements = function (account) {
   movementsElement.innerHTML = "";
-  account.movements.forEach(function (mov, number) {
-    const DisplayDate = new Date(account.movementsDates[number]).toLocaleString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
+  const acc = account.movements.map((mov, i) => {
+    return { movements: mov, movementsDates: account.movementsDates[i] };
   });
+  if (sorted) acc.sort((a, b) => a.movements - b.movements);
+  acc.forEach(function (obj, number) {
+    const DisplayDate = new Date(obj.movementsDates).toLocaleString(
+      "en-GB",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      },
+    );
     const insertMov = `<div
-              class="flex justify-between items-baseline px-8 py-6 border-b border-[#EEEEEE] ${mov < 0 ? "WITHDRAWAL" : "DEPOSIT"}"
+              class="flex justify-between items-baseline px-8 py-6 border-b border-[#EEEEEE] ${obj.movements < 0 ? "WITHDRAWAL" : "DEPOSIT"}"
             >
               <div class="flex gap-6">
                 <p
-                  class="rounded-xl bg-linear-to-br ${mov < 0 ? "from-[#FC525F] to-[#E9315B]" : "from-[#8DDA62] to-[#43B882]"} text-white text-[11px] font-[poppins] font-medium py-px px-2"
+                  class="rounded-xl bg-linear-to-br ${obj.movements < 0 ? "from-[#FC525F] to-[#E9315B]" : "from-[#8DDA62] to-[#43B882]"} text-white text-[11px] font-[poppins] font-medium py-px px-2"
                 >
-                  ${++number} ${mov < 0 ? "WITHDRAWAL" : "DEPOSIT"}
+                  ${++number} ${obj.movements < 0 ? "WITHDRAWAL" : "DEPOSIT"}
                 </p>
                 <span class="text-[11px] font-medium text-[rgb(102,102,102)]"
                   >${DisplayDate}</span
                 >
               </div>
-              <span class="text-[17px] text-[rgb(68,68,68)]">${mov > 0 ? "" : "-"}$${mov > 0 ? mov : mov * -1}</span>
+              <span class="text-[17px] text-[rgb(68,68,68)]">${obj.movements > 0 ? "" : "-"}$${obj.movements > 0 ? obj.movements : obj.movements * -1}</span>
             </div>`;
     movementsElement.insertAdjacentHTML("afterbegin", insertMov);
   });
@@ -212,7 +219,9 @@ const transferMoney = function (transferTo, Amount, accounts, account) {
     return -1;
   }
   account.movements.push(Amount * -1);
+  account.movementsDates.push(new Date().toISOString());
   ReceiverAccount.movements.push(Amount);
+  ReceiverAccount.movementsDates.push(new Date().toISOString());
   transferToElement.value = "";
   transferAmountElement.value = "";
   transferToElement.blur();
@@ -257,18 +266,13 @@ const loanRequest = function (amount, account) {
     return -1;
   }
   account.movements.push(amount);
+  account.movementsDates.push(new Date().toISOString());
   loanAmountElement.value = "";
   loanAmountElement.blur();
 };
 const sorting = function () {
-  if (!sorted) {
-    const acc = structuredClone(account);
-    acc.movements.sort((a, b) => a - b);
-    insertMovements(acc);
-  } else if (sorted) {
+    sorted = !sorted;
     insertMovements(account);
-  }
-  sorted = !sorted;
 };
 createUserName(accounts);
 loginElement.addEventListener("click", (e) => {
