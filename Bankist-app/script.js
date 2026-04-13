@@ -14,6 +14,7 @@ const account1 = {
     "2026-04-06T23:36:17.929Z",
     "2026-04-13T10:51:36.790Z",
   ],
+  locale: "en-US",
 };
 const account2 = {
   owner: "Jessica Davis",
@@ -30,6 +31,7 @@ const account2 = {
     "2020-06-25T18:49:59.371Z",
     "2020-07-26T12:01:20.894Z",
   ],
+  locale: "en-GB",
 };
 const account3 = {
   owner: "Steven Thomas Williams",
@@ -37,6 +39,7 @@ const account3 = {
   interestRate: 0.7,
   pin: 3333,
   movementsDates: [],
+  locale: "en-US",
 };
 const account4 = {
   owner: "Sarah Smith",
@@ -44,6 +47,7 @@ const account4 = {
   interestRate: 1,
   pin: 4444,
   movementsDates: [],
+  locale: "en-US",
 };
 const accounts = [account1, account2, account3, account4];
 const movementsElement = document.querySelector(".movements");
@@ -89,11 +93,11 @@ const insertMovements = function (account) {
     else if (daysPassed <= 7)
       DisplayDate = `${Math.round((new Date() - new Date(obj.movementsDates)) / (1000 * 60 * 60 * 24))} days ago`;
     else
-      DisplayDate = new Date(obj.movementsDates).toLocaleString("en-GB", {
+      DisplayDate = new Intl.DateTimeFormat(account.locale, {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
-      });
+      }).format(new Date(obj.movementsDates));
     const insertMov = `<div
               class="flex justify-between items-baseline px-8 py-6 border-b border-[#EEEEEE] ${obj.movements < 0 ? "WITHDRAWAL" : "DEPOSIT"}"
             >
@@ -141,14 +145,13 @@ const interest = function (account) {
 };
 const updateClock = function () {
   const now = new Date();
-  const formatted = now.toLocaleString("en-GB", {
+  const formatted = new Intl.DateTimeFormat(account.locale, {
+    hour: "2-digit",
+    minute: "2-digit",
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  }).format(now);
   clockElement.textContent = formatted;
 };
 const createUserName = function (accounts) {
