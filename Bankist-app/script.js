@@ -5,14 +5,14 @@ const account1 = {
   interestRate: 1.2,
   pin: 1111,
   movementsDates: [
-    "2019-11-18T21:31:17.178Z",
+    "2026-04-12T21:31:17.178Z",
     "2019-12-23T07:42:02.383Z",
-    "2020-01-28T09:15:04.904Z",
+    "2026-04-23T09:15:04.904Z",
     "2020-04-01T10:17:24.185Z",
     "2020-05-08T14:11:59.604Z",
     "2020-05-27T17:01:17.194Z",
-    "2020-07-11T23:36:17.929Z",
-    "2020-07-12T10:51:36.790Z",
+    "2026-04-06T23:36:17.929Z",
+    "2026-04-13T10:51:36.790Z",
   ],
 };
 const account2 = {
@@ -75,14 +75,25 @@ const insertMovements = function (account) {
   });
   if (sorted) acc.sort((a, b) => a.movements - b.movements);
   acc.forEach(function (obj, number) {
-    const DisplayDate = new Date(obj.movementsDates).toLocaleString(
-      "en-GB",
-      {
+    let DisplayDate;
+    console.log(
+      (new Date() - new Date(obj.movementsDates)) / (1000 * 60 * 60 * 24),
+    );
+    let daysPassed = Math.round(
+      Math.abs(
+        (new Date() - new Date(obj.movementsDates)) / (1000 * 60 * 60 * 24),
+      ),
+    );
+    if (daysPassed === 0) DisplayDate = "Today";
+    else if (daysPassed === 1) DisplayDate = "Yesterday";
+    else if (daysPassed <= 7)
+      DisplayDate = `${Math.round((new Date() - new Date(obj.movementsDates)) / (1000 * 60 * 60 * 24))} days ago`;
+    else
+      DisplayDate = new Date(obj.movementsDates).toLocaleString("en-GB", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
-      },
-    );
+      });
     const insertMov = `<div
               class="flex justify-between items-baseline px-8 py-6 border-b border-[#EEEEEE] ${obj.movements < 0 ? "WITHDRAWAL" : "DEPOSIT"}"
             >
@@ -271,8 +282,8 @@ const loanRequest = function (amount, account) {
   loanAmountElement.blur();
 };
 const sorting = function () {
-    sorted = !sorted;
-    insertMovements(account);
+  sorted = !sorted;
+  insertMovements(account);
 };
 createUserName(accounts);
 loginElement.addEventListener("click", (e) => {
