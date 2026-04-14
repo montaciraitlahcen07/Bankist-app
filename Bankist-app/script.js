@@ -15,6 +15,7 @@ const account1 = {
     "2026-04-13T10:51:36.790Z",
   ],
   locale: "en-US",
+  currency: "EUR",
 };
 const account2 = {
   owner: "Jessica Davis",
@@ -32,6 +33,7 @@ const account2 = {
     "2020-07-26T12:01:20.894Z",
   ],
   locale: "en-GB",
+  currency: "USD",
 };
 const account3 = {
   owner: "Steven Thomas Williams",
@@ -40,6 +42,7 @@ const account3 = {
   pin: 3333,
   movementsDates: [],
   locale: "en-US",
+  currency: "USD",
 };
 const account4 = {
   owner: "Sarah Smith",
@@ -48,6 +51,7 @@ const account4 = {
   pin: 4444,
   movementsDates: [],
   locale: "en-US",
+  currency: "EUR",
 };
 const accounts = [account1, account2, account3, account4];
 const movementsElement = document.querySelector(".movements");
@@ -111,28 +115,29 @@ const insertMovements = function (account) {
                   >${DisplayDate}</span
                 >
               </div>
-              <span class="text-[17px] text-[rgb(68,68,68)]">${obj.movements > 0 ? "" : "-"}$${obj.movements > 0 ? obj.movements : obj.movements * -1}</span>
+              <span class="text-[17px] text-[rgb(68,68,68)]">${new Intl.NumberFormat(account.locale, {style: 'currency', currency: account.currency}).format(obj.movements)}</span>
             </div>`;
     movementsElement.insertAdjacentHTML("afterbegin", insertMov);
   });
 };
 const totalBalance = function (movements) {
   let balance = movements.reduce((accu, mov) => accu + mov, 0);
-  balanceElement.textContent = `${balance >= 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
+  
+  balanceElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(balance);
 };
 const inBalance = function (movements) {
   let balance = movements.reduce(
     (accu, mov) => (mov > 0 ? accu + mov : accu),
     0,
   );
-  InBalanceElement.textContent = `${balance > 0 ? "" : "-"}$${balance > 0 ? balance : balance * -1}`;
+  InBalanceElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(balance);
 };
 const outBalance = function (movements) {
   let balance = movements.reduce(
     (accu, mov) => (mov < 0 ? accu + mov * -1 : accu),
     0,
   );
-  OutBalanceElement.textContent = `$${balance}`;
+  OutBalanceElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(balance);
 };
 const interest = function (account) {
   let interest = account.movements
@@ -141,7 +146,7 @@ const interest = function (account) {
     .filter((interest) => interest >= 1)
     .reduce((interest, mov) => interest + mov, 0)
     .toFixed(2);
-  interestElement.textContent = `$${interest}`;
+  interestElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(interest);
 };
 const updateClock = function () {
   const now = new Date();
