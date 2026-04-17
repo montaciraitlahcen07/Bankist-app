@@ -75,7 +75,9 @@ const closeButtonElement = document.querySelector(".close_button");
 const loanAmountElement = document.querySelector(".loan_amount");
 const loanButtonElement = document.querySelector(".loan_button");
 const sortElement = document.querySelector(".sort");
+const LogOutTimerElement = document.querySelector(".Log-out");
 let sorted = false;
+let time = 600;
 const insertMovements = function (account) {
   movementsElement.innerHTML = "";
   const acc = account.movements.map((mov, i) => {
@@ -115,29 +117,38 @@ const insertMovements = function (account) {
                   >${DisplayDate}</span
                 >
               </div>
-              <span class="text-[17px] text-[rgb(68,68,68)]">${new Intl.NumberFormat(account.locale, {style: 'currency', currency: account.currency}).format(obj.movements)}</span>
+              <span class="text-[17px] text-[rgb(68,68,68)]">${new Intl.NumberFormat(account.locale, { style: "currency", currency: account.currency }).format(obj.movements)}</span>
             </div>`;
     movementsElement.insertAdjacentHTML("afterbegin", insertMov);
   });
 };
 const totalBalance = function (movements) {
   let balance = movements.reduce((accu, mov) => accu + mov, 0);
-  
-  balanceElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(balance);
+
+  balanceElement.textContent = new Intl.NumberFormat("en-us", {
+    style: "currency",
+    currency: account.currency,
+  }).format(balance);
 };
 const inBalance = function (movements) {
   let balance = movements.reduce(
     (accu, mov) => (mov > 0 ? accu + mov : accu),
     0,
   );
-  InBalanceElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(balance);
+  InBalanceElement.textContent = new Intl.NumberFormat("en-us", {
+    style: "currency",
+    currency: account.currency,
+  }).format(balance);
 };
 const outBalance = function (movements) {
   let balance = movements.reduce(
     (accu, mov) => (mov < 0 ? accu + mov * -1 : accu),
     0,
   );
-  OutBalanceElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(balance);
+  OutBalanceElement.textContent = new Intl.NumberFormat("en-us", {
+    style: "currency",
+    currency: account.currency,
+  }).format(balance);
 };
 const interest = function (account) {
   let interest = account.movements
@@ -146,7 +157,10 @@ const interest = function (account) {
     .filter((interest) => interest >= 1)
     .reduce((interest, mov) => interest + mov, 0)
     .toFixed(2);
-  interestElement.textContent = new Intl.NumberFormat('en-us', {style: 'currency', currency: account.currency}).format(interest);
+  interestElement.textContent = new Intl.NumberFormat("en-us", {
+    style: "currency",
+    currency: account.currency,
+  }).format(interest);
 };
 const updateClock = function () {
   const now = new Date();
@@ -186,6 +200,7 @@ const updateData = function (account) {
 };
 // the account who is active right now the one that could transfer money, loan and close the account
 let account = null;
+let LogOutTimer;
 const Login = function (username, pin, accounts) {
   sorted = false;
   if (username == undefined || pin == undefined) {
@@ -207,6 +222,12 @@ const Login = function (username, pin, accounts) {
   if (account.pin !== pin) {
     return -1;
   }
+  time = 600;
+  if(LogOutTimer) clearInterval(LogOutTimer);
+  let min = String(parseInt(time / 60)).padStart(2, "0");
+  let sec = String(time % 60).padStart(2, "0");
+  LogOutTimerElement.textContent = `${min}:${sec}`;
+  LogOutTimer = setInterval(StartLogOutTimer, 1000);
   updateData(account);
 };
 const transferMoney = function (transferTo, Amount, accounts, account) {
@@ -237,6 +258,12 @@ const transferMoney = function (transferTo, Amount, accounts, account) {
     transferAmountElement.blur();
     return -1;
   }
+  time = 600;
+  if(LogOutTimer) clearInterval(LogOutTimer);
+  let min = String(parseInt(time / 60)).padStart(2, "0");
+  let sec = String(time % 60).padStart(2, "0");
+  LogOutTimerElement.textContent = `${min}:${sec}`;
+  LogOutTimer = setInterval(StartLogOutTimer, 1000);
   account.movements.push(Amount * -1);
   account.movementsDates.push(new Date().toISOString());
   ReceiverAccount.movements.push(Amount);
@@ -284,6 +311,12 @@ const loanRequest = function (amount, account) {
     loanAmountElement.blur();
     return -1;
   }
+  time = 600;
+  if(LogOutTimer) clearInterval(LogOutTimer);
+  let min = String(parseInt(time / 60)).padStart(2, "0");
+  let sec = String(time % 60).padStart(2, "0");
+  LogOutTimerElement.textContent = `${min}:${sec}`;
+  LogOutTimer = setInterval(StartLogOutTimer, 1000);
   account.movements.push(amount);
   account.movementsDates.push(new Date().toISOString());
   loanAmountElement.value = "";
@@ -292,6 +325,19 @@ const loanRequest = function (amount, account) {
 const sorting = function () {
   sorted = !sorted;
   insertMovements(account);
+};
+const StartLogOutTimer = function () {
+  time--;
+  let min = String(parseInt(time / 60)).padStart(2, "0");
+  let sec = String(time % 60).padStart(2, "0");
+  LogOutTimerElement.textContent = `${min}:${sec}`;
+  if (time == 0) {
+    account = null;
+    mainElement.classList.add("opacity-0");
+    summaryElement.classList.add("opacity-0");
+    greetingElement.textContent = `Log in to get started`;
+    clearInterval(LogOutTimer)
+  }
 };
 createUserName(accounts);
 loginElement.addEventListener("click", (e) => {
